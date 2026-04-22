@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3><i class="fas fa-trash"></i> Delete Student</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Are you sure you want to delete the following student?
+                </div>
+                
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Student ID</th>
+                        <td>{{ student.student_id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ student.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Class</th>
+                        <td>{{ student.class_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Roll No</th>
+                        <td>{{ student.roll_no }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ student.email }}</td>
+                    </tr>
+                </table>
+                
+                <div class="alert alert-danger">
+                    <strong>Warning!</strong> This action cannot be undone. All results associated with this student will also be deleted.
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Yes, Delete Student
+                        </button>
+                        <a href="{% url 'student_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

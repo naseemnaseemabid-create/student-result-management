@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="text-center"><i class="fas fa-eye"></i> View Your Result</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="roll_no" class="form-label">Enter Roll Number</label>
+                        <input type="text" name="roll_no" class="form-control" required placeholder="Enter your roll number">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search"></i> View Result
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        {% if result_data %}
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4>Result for {{ result_data.student.name }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Student ID:</strong> {{ result_data.student.student_id }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Class:</strong> {{ result_data.student.class_name }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Roll Number:</strong> {{ result_data.student.roll_no }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Email:</strong> {{ result_data.student.email }}
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Subject</th>
+                                <th>Marks Obtained</th>
+                                <th>Total Marks</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in result_data.results %}
+                            <tr>
+                                <td>{{ result.subject.subject_name }}</td>
+                                <td>{{ result.marks }}</td>
+                                <td>{{ result.total_marks }}</td>
+                                <td>{{ result.grade }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot class="table-primary">
+                            <tr>
+                                <th>Total</th>
+                                <th>{{ result_data.total_obtained }}</th>
+                                <th>{{ result_data.total_max }}</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Percentage</th>
+                                <th colspan="2">{{ result_data.overall_percentage|floatformat:2 }}%</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Overall Grade</th>
+                                <th colspan="2">{{ result_data.overall_grade }}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button onclick="window.print()" class="btn btn-info">
+                        <i class="fas fa-print"></i> Print Result
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style media="print">
+    .navbar, footer, .btn, .card-header, form {
+        display: none !important;
+    }
+    .card {
+        border: none !important;
+    }
+    body {
+        background: white !important;
+    }
+</style>
+{% endblock %}
